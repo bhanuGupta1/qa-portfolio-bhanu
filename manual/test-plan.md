@@ -1,35 +1,53 @@
-# Mini Test Plan — SEEK (Public)
+## Revision History
+- Initial plan assumed guest job search access
+- Scope updated after identifying sign-in gating on job search and apply flows
+
+
+# Test Plan – SEEK (Guest User & Sign-in Gated Flows)
 
 ## Objective
-Practice manual testing using real user flows and document findings clearly.
+To evaluate the usability, access control behaviour, and consistency of SEEK when accessed as a non-authenticated (guest) user.
+
+The focus is on:
+- Sign-in gating behaviour
+- Guest navigation experience
+- Job page visibility
+- Apply flow authentication requirements
+- Accessibility via keyboard navigation
 
 ## Scope
-- Search jobs
-- Filters and sorting
-- Job listing view
-- Apply flow (public parts only)
-- Basic usability/accessibility checks
+In scope:
+- Homepage access
+- Job search access as guest
+- Job listing pages (view-only)
+- Sign-in and register pages
+- Apply flow (pre-authentication)
+- “Unlock job insights” feature visibility
+- Keyboard accessibility (Tab navigation)
 
-## Out of scope
-- Security/vulnerability exploitation
-- Performance stress testing
-- Anything that breaks terms of service
+Out of scope:
+- Account creation
+- Job application submission
+- Security exploitation or bypass attempts
+- Performance or load testing
 
 ## Test Environment
-- Chrome Desktop on Windows
-
-## Risks (Top)
-1. Search results relevance and consistency
-2. Filters reset unexpectedly / confusing behaviour
-3. No-results UX unclear
-4. Apply flow broken links or confusing redirects
-5. Keyboard navigation / accessibility issues
+- Browser: Chrome (Desktop)
+- Mode: Incognito
+- OS: Windows
+- User state: Not logged in
 
 ## Entry Criteria
-- Site loads
-- Internet stable
+- SEEK homepage accessible
+- Internet connection available
 
 ## Exit Criteria
-- 50+ test cases written
-- 10 findings/bugs documented with evidence
+- Guest access behaviour validated
+- Authentication gates identified
+- Findings documented with evidence
 
+## Risks Identified
+- Confusion caused by inconsistent guest access
+- Lack of explanation for login requirement
+- Potential drop-off before job value is demonstrated
+- Perceived UI instability due to login gate flicker
