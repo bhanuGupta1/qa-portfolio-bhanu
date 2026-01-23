@@ -17,3 +17,11 @@ This repository documents my QA practice using a real NZ public website.
 - manual/test-cases.md
 - manual/bug-reports.md
 - evidence/screenshots/
+
+## Additional Artifacts
+- Test Summary Report
+- Risk Matrix
+- Requirements Traceability Matrix (RTM)
+- Accessibility Checks
+- Known Limitations Documentation
+
