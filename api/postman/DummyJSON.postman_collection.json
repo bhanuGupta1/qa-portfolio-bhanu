@@ -1,0 +1,26 @@
+{
+  "id": "dummyjson-env",
+  "name": "dummyjson-env",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "https://dummyjson.com",
+      "enabled": true
+    },
+    {
+      "key": "token",
+      "value": "",
+      "enabled": true
+    },
+    {
+      "key": "validUserId",
+      "value": "1",
+      "enabled": true
+    },
+    {
+      "key": "invalidUserId",
+      "value": "99999",
+      "enabled": true
+    }
+  ]
+}
