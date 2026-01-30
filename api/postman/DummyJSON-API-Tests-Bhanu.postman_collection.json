@@ -1,0 +1,193 @@
+{
+  "info": {
+    "name": "DummyJSON API Tests (Bhanu)",
+    "_postman_id": "dummyjson-collection-bhanu",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "A - Auth",
+      "item": [
+        {
+          "name": "POST Login (Negative - invalid creds)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"invalid_user_123\",\n  \"password\": \"wrong_password\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 for invalid login', () => {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('Error message exists', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('message');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "B - Users",
+      "item": [
+        {
+          "name": "GET All Users",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users", "host": ["{{baseUrl}}"], "path": ["users"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Users array exists', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('users');",
+                  "  pm.expect(json.users).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test('Response time < 1200ms', () => {",
+                  "  pm.expect(pm.response.responseTime).to.be.below(1200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Single User (Valid)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users/{{validUserId}}", "host": ["{{baseUrl}}"], "path": ["users", "{{validUserId}}"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('User has id and email', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('id');",
+                  "  pm.expect(json).to.have.property('email');",
+                  "});",
+                  "",
+                  "pm.test('Returned user id matches requested id', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(String(json.id)).to.eql(String(pm.environment.get('validUserId')));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Single User (Invalid)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users/{{invalidUserId}}", "host": ["{{baseUrl}}"], "path": ["users", "{{invalidUserId}}"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 404', () => {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "C - Products",
+      "item": [
+        {
+          "name": "GET Products",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/products", "host": ["{{baseUrl}}"], "path": ["products"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Products array exists', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('products');",
+                  "  pm.expect(json.products).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test('Each product has title and price (sample check)', () => {",
+                  "  const json = pm.response.json();",
+                  "  const first = json.products && json.products[0];",
+                  "  pm.expect(first).to.have.property('title');",
+                  "  pm.expect(first).to.have.property('price');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "D - Protected Endpoint",
+      "item": [
+        {
+          "name": "GET Authenticated User (No Token)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] },
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 401 without valid token', () => {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "pm.test('Error message exists', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('message');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
