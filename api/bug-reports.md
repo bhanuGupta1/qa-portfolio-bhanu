@@ -1,62 +1,42 @@
-# Bug Reports / Findings — DummyJSON API Tests
+# Findings — DummyJSON API Tests
 
-> Note: DummyJSON is a public demo API, so these are documented as testing findings.
-> Where failures are caused by my test setup (env values), I label them as "Test Issue" not "Product Bug".
+> These findings document observations from API testing.
+> DummyJSON is a public demo API; no product defects are claimed.
 
 ---
 
-## API-FINDING-01: “GET Single User (Valid)” request uses null userId (test setup issue)
-Severity: Medium  
-Priority: High  
-
-Endpoint:
-- GET /users/{{userId}}
+## API-FINDING-01: Negative scenarios correctly handled by API
+Severity: Info  
+Priority: Low  
 
 Observed:
-- Request executed as /users/null
-- API returns 400 (Bad Request)
-- Tests fail because expected status was 200
+- Invalid login returns 400
+- Invalid user ID returns 404
+- Protected endpoint without token returns 401
 
 Expected:
-- userId should be a real numeric id (e.g., 1)
-- Endpoint should return 200 with user object
+- API should reject invalid requests with appropriate error codes
 
-Impact:
-- Blocks confidence in “valid single user” coverage
-- Misleads results (looks like API is broken when test config is wrong)
+Assessment:
+- Behaviour is correct
+- Confirms robust error handling and access control
 
 Evidence:
-- api/evidence/SS-03-failed-test-example.png
+- api/evidence/SS-03-negative-test-pass.png
+
+---
+
+## API-FINDING-02: Environment-driven test design improves clarity
+Severity: Info  
+Priority: Low  
+
+Observed:
+- Base URL, userId, and token managed via environment variables
+- Tests remain portable and reusable across environments
+
+Assessment:
+- Positive test design practice
+- Aligns with real-world API automation standards
+
+Evidence:
 - api/evidence/SS-04-env-vars.png
-
-Fix suggestion:
-- Set env var `userId=1` (or another valid id)
-- Add a guard test: fail early if userId is empty/null
-
----
-
-## API-FINDING-02: Login “success” scenario returns 400 (credentials/env mismatch)
-Severity: Medium  
-Priority: High  
-
-Endpoint:
-- POST /auth/login
-
-Observed:
-- Test expects 200 OK but received 400
-- Token assertion fails (token undefined)
-
-Expected:
-- With valid credentials, API returns 200 + token
-
-Impact:
-- Blocks all auth-dependent tests (protected endpoint)
-- Prevents full regression run
-
-Evidence:
-- api/evidence/SS-01-postman-run-summary.png
-
-Fix suggestion:
-- Verify credentials used in the request body
-- Store credentials in environment variables
-- Add negative test case for invalid creds (expect 400/401)

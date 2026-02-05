@@ -1,27 +1,46 @@
 # QA Portfolio — Bhanu
 
-This repository documents my QA practice using a real NZ public website.
+Hands-on QA practice across:
+1) Manual web testing (SEEK — public NZ website)
+2) API testing automation (DummyJSON — Postman + Newman)
 
-## Project Under Test
-- Website: SEEK (Public Site)
-- Platform: Web
-- Browser: Chrome Desktop
+I’m building real, recruiter-readable QA deliverables: test plans, test cases, bug reports, and execution evidence — not just course certificates.
 
-## What I’m practicing
-- Test planning + test case design
-- Exploratory testing and clear bug reporting
-- Risk-based thinking and usability validation
+---
 
-## Structure
-- manual/test-plan.md
-- manual/test-cases.md
-- manual/bug-reports.md
-- evidence/screenshots/
+## 1) Manual Web Testing — SEEK (Guest User)
+Focus: guest experience, sign-in gating behaviour, usability, and accessibility checks.
 
-## Additional Artifacts
+Folder: manual/
+
+Key deliverables:
+- Test Plan
+- Executed Test Cases
+- Findings / Bug Reports (severity + impact + evidence)
 - Test Summary Report
 - Risk Matrix
 - Requirements Traceability Matrix (RTM)
 - Accessibility Checks
-- Known Limitations Documentation
+- Known Limitations
 
+---
+
+## 2) API Testing — DummyJSON (Postman + Newman)
+Focus: automated API checks + reporting using Postman collections and Newman.
+
+Folder: api/
+
+Key deliverables:
+- API Test Plan
+- Executed API Test Cases (positive + negative)
+- Findings (including test setup issues vs product behaviour)
+- Newman HTML report output
+- Evidence screenshots
+
+---
+
+## Tools Used
+- Manual testing (web)
+- Postman (collections + environments)
+- Newman CLI + HTML report (htmlextra)
+- Git + GitHub

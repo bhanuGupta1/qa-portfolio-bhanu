@@ -1,9 +1,9 @@
-# API Testing – DummyJSON (Postman + Newman)
+# API Testing — DummyJSON (Postman + Newman)
 
 ## Goal
 Practice API testing skills used in Junior QA roles:
 - validating status codes and response bodies
-- negative testing (invalid auth, invalid ids)
+- negative testing (invalid auth, invalid ids, missing token)
 - basic performance checks (response time)
 - generating an automated Newman HTML report
 
@@ -19,10 +19,13 @@ Practice API testing skills used in Junior QA roles:
 
 ## How to run (Newman)
 1) Install:
-   npm i -g newman newman-reporter-htmlextra
+npm i -g newman newman-reporter-htmlextra
 
-2) Run:
-   newman run "api/postman/DummyJSON-API-Tests-Bhanu.postman_collection.json" -e "api/postman/dummyjson-env.postman_environment.json" -r cli,htmlextra --reporter-htmlextra-export "api/newman/newman-report.html"
+2) Run (from repo root):
+newman run "api/postman/DummyJSON-API-Tests-Bhanu.postman_collection.json" -e "api/postman/dummyjson-env.postman_environment.json" -r cli,htmlextra --reporter-htmlextra-export "api/newman/newman-report.html"
 
 ## Output
 - api/newman/newman-report.html
+
+## Evidence
+- api/evidence/

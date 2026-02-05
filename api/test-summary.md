@@ -1,44 +1,41 @@
-# API Test Summary Report — DummyJSON
+# Test Summary Report — DummyJSON API
 
-## Overview
-This test cycle validates core DummyJSON API endpoints using Postman and Newman.
-Both positive and negative scenarios were executed to verify correct API behaviour.
-
-## Test Scope
-Endpoints covered:
-- Authentication (login – negative)
-- Users (list, valid ID, invalid ID)
-- Products (list)
-- Protected endpoint (no token)
-
-## Execution Details
-- Tooling: Postman + Newman
+## Execution Overview
+- Tooling: Postman Runner + Newman CLI
 - Environment: dummyjson-env
-- Iterations: 1
-- Total Requests: 6
-- Total Assertions: 14
+- Collection: DummyJSON API Tests (Bhanu)
+- Execution type: Automated API regression
+- Report: api/newman/newman-report.html
 
 ## Results Summary
-- Passed Tests: 14
-- Failed Tests: 0
-- Skipped Tests: 0
-- Average Response Time: ~292 ms
+- Total requests executed: 6
+- Total assertions: 14
+- Passed: 14
+- Failed: 0
+- Skipped: 0
+- Average response time: ~292 ms
 
-## Key Validation Areas
-- Correct HTTP status codes (200, 400, 401, 404)
-- Error handling for invalid inputs
-- Authentication enforcement
-- Response structure validation
+## Observations
+- All positive scenarios returned expected 200 responses
+- Negative scenarios returned correct error codes (400 / 401 / 404)
+- No unexpected failures observed
+- API error handling is consistent and predictable
 
-## Notes on Negative Testing
-Several scenarios intentionally validate error responses:
-- Invalid login returns 400
-- Invalid user ID returns 404
-- Protected endpoint without token returns 401
+## Negative Testing Note
+Several test cases intentionally validate error responses:
+- Invalid login → 400
+- Invalid user ID → 404
+- Protected endpoint without token → 401
 
-These tests are expected to "fail" at the API level but are marked as PASS
-because the system behaves correctly.
+These tests are marked PASS because the API behaved as expected.
+
+## Evidence
+- Postman runner results: api/evidence/SS-01-postman-run-summary.png
+- Newman HTML report: api/evidence/SS-02-newman-report-top.png
+- Negative test validation: api/evidence/SS-03-negative-test-pass.png
+- Environment config: api/evidence/SS-04-env-vars.png
 
 ## Conclusion
-The API behaves as expected across both valid and invalid scenarios.
-Negative testing confirms robust error handling and access control.
+The DummyJSON API demonstrates correct behaviour across both
+positive and negative scenarios. Automated execution via Newman
+confirms regression stability.

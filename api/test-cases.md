@@ -1,4 +1,6 @@
 # Test Cases — DummyJSON API (Executed)
+> Note: Negative test cases PASS when the API returns the expected error response.
+
 
 ## A) Auth
 

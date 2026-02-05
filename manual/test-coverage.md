@@ -21,6 +21,17 @@
 - Apply flow (ideal behaviour)
 - Usability and accessibility checks
 
+## Coverage Clarification
+
+This project includes both executed and planned test coverage.
+
+- Executed tests validate real behaviour observed during testing
+- Planned tests demonstrate test design and future regression coverage
+
+Negative scenarios are included and PASS when the API correctly
+returns expected error responses.
+
+
 ---
 
 ## Planned Test Scenarios
