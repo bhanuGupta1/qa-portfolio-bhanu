@@ -3,7 +3,7 @@
 ## Execution
 - Tool: Cypress UI + CLI
 - Site: https://example.cypress.io
-- Date: (fill today)
+- Date: 02/06/26
 
 ## Results
 - Specs executed: 2
