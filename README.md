@@ -4,7 +4,6 @@ Hands-on QA practice across:
 1) Manual web testing (SEEK — public NZ website)
 2) API testing automation (DummyJSON — Postman + Newman)
 
-I’m building real, recruiter-readable QA deliverables: test plans, test cases, bug reports, and execution evidence — not just course certificates.
 
 ---
 
