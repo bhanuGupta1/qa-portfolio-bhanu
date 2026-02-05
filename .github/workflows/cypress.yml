@@ -1,0 +1,25 @@
+name: Cypress Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        working-directory: automation/cypress
+        run: npm install
+
+      - name: Run Cypress (headless)
+        working-directory: automation/cypress
+        run: npx cypress run
