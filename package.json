@@ -1,0 +1,24 @@
+{
+  "name": "qa-portfolio-bhanu",
+  "version": "1.0.0",
+  "description": "Hands-on QA practice across:\r 1) Manual web testing (SEEK — public NZ website)\r 2) API testing automation (DummyJSON — Postman + Newman)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bhanuGupta1/qa-portfolio-bhanu.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/bhanuGupta1/qa-portfolio-bhanu/issues"
+  },
+  "homepage": "https://github.com/bhanuGupta1/qa-portfolio-bhanu#readme",
+  "devDependencies": {
+    "cypress": "^15.10.0"
+  }
+}
