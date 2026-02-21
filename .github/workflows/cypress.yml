@@ -7,6 +7,7 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -17,9 +18,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        working-directory: automation/cypress
-        run: npm install
+        run: npm ci
 
       - name: Run Cypress (headless)
-        working-directory: automation/cypress
         run: npx cypress run
