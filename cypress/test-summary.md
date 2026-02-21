@@ -16,5 +16,6 @@
 - Next step: add a small Page Object / custom command pattern and run in GitHub Actions.
 
 ## Evidence
-- Runner pass: automation/cypress/evidence/SS-01-cypress-runner-pass.png
-- CLI pass: automation/cypress/evidence/SS-04-cli-run-pass.png
+- Cypress Runner (UI) pass: `cypress/evidence/SS-01-cypress-runner-pass.png`
+- Spec pass (basic navigation): `cypress/evidence/SS-02-basic-navigation-pass.png`
+- Spec pass (content check): `cypress/evidence/SS-03-content-check-pass.png`

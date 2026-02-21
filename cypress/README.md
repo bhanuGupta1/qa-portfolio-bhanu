@@ -12,16 +12,17 @@ This folder contains my Cypress E2E practice to demonstrate automation basics us
 https://example.cypress.io (public Cypress demo site)
 
 ## How to run locally
-From this folder:
+
+From the repo root:
 
 1) Install dependencies
 npm install
 
-2) Open Cypress UI
+2) Open Cypress UI (Runner)
 npx cypress open
 
 3) Run headless in CLI
 npx cypress run
 
 ## Evidence
-See: `automation/cypress/evidence/`
+See: `cypress/evidence/`
