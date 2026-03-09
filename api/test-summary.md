@@ -8,34 +8,38 @@
 - Report: api/newman/newman-report.html
 
 ## Results Summary
-- Total requests executed: 6
-- Total assertions: 14
-- Passed: 14
-- Failed: 0
+- Total requests: 18
+- Total assertions: 47
+- Passed: — (pending execution)
+- Failed: — (pending execution)
 - Skipped: 0
-- Average response time: ~292 ms
 
-## Observations
-- All positive scenarios returned expected 200 responses
-- Negative scenarios returned correct error codes (400 / 401 / 404)
-- No unexpected failures observed
-- API error handling is consistent and predictable
+> Run the collection in Postman or via Newman to populate results.
+> Update this section after execution with actual pass/fail counts and response times.
+
+## Test Coverage
+
+| Category | Requests | Assertions | Focus |
+|----------|----------|------------|-------|
+| A - Auth | 3 | 8 | Login flows (valid, invalid, empty) |
+| B - Users | 4 | 10 | List, single, invalid, pagination |
+| C - Products (CRUD) | 8 | 22 | Full CRUD, search, sort, schema |
+| D - Protected (Chained Auth) | 3 | 7 | Token-based access control |
 
 ## Negative Testing Note
 Several test cases intentionally validate error responses:
 - Invalid login → 400
+- Empty body login → 400
 - Invalid user ID → 404
+- Invalid product ID → 404
 - Protected endpoint without token → 401
+- Protected endpoint with fake token → 401
 
 These tests are marked PASS because the API behaved as expected.
 
 ## Evidence
-- Postman runner results: api/evidence/SS-01-postman-run-summary.png
-- Newman HTML report: api/evidence/SS-02-newman-report-top.png
-- Negative test validation: api/evidence/SS-03-negative-test-pass.png
-- Environment config: api/evidence/SS-04-env-vars.png
+- Postman runner results: api/evidence/ (update after run)
+- Newman HTML report: api/newman/newman-report.html
 
 ## Conclusion
-The DummyJSON API demonstrates correct behaviour across both
-positive and negative scenarios. Automated execution via Newman
-confirms regression stability.
+(Update after execution with observations on pass rate, response times, and any unexpected behaviour.)
