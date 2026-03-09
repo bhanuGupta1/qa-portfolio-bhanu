@@ -9,6 +9,48 @@
       "name": "A - Auth",
       "item": [
         {
+          "name": "POST Login (Valid) - Store Token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"emilys\",\n  \"password\": \"emilyspass\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 for valid login', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains accessToken', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('accessToken');",
+                  "  pm.expect(json.accessToken).to.be.a('string').and.not.empty;",
+                  "});",
+                  "",
+                  "pm.test('Store token in environment', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.environment.set('token', json.accessToken);",
+                  "});",
+                  "",
+                  "pm.test('Response contains user info', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('username');",
+                  "  pm.expect(json).to.have.property('email');",
+                  "  pm.expect(json).to.have.property('firstName');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
           "name": "POST Login (Negative - invalid creds)",
           "request": {
             "method": "POST",
@@ -25,6 +67,35 @@
               "script": {
                 "exec": [
                   "pm.test('Status is 400 for invalid login', () => {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('Error message exists', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('message');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Login (Negative - empty body)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 for empty body login', () => {",
                   "  pm.response.to.have.status(400);",
                   "});",
                   "",
@@ -119,11 +190,40 @@
               }
             }
           ]
+        },
+        {
+          "name": "GET Users with Limit and Skip (Pagination)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/users?limit=5&skip=10", "host": ["{{baseUrl}}"], "path": ["users"], "query": [{ "key": "limit", "value": "5" }, { "key": "skip", "value": "10" }] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Returned users count matches limit', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.users.length).to.eql(5);",
+                  "});",
+                  "",
+                  "pm.test('Skip parameter is reflected', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.skip).to.eql(10);",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "name": "C - Products",
+      "name": "C - Products (CRUD)",
       "item": [
         {
           "name": "GET Products",
@@ -156,14 +256,258 @@
               }
             }
           ]
+        },
+        {
+          "name": "GET Single Product - Schema Validation",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/products/1", "host": ["{{baseUrl}}"], "path": ["products", "1"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Product schema has required fields', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('id');",
+                  "  pm.expect(json).to.have.property('title');",
+                  "  pm.expect(json).to.have.property('description');",
+                  "  pm.expect(json).to.have.property('price');",
+                  "  pm.expect(json).to.have.property('category');",
+                  "  pm.expect(json).to.have.property('brand');",
+                  "  pm.expect(json).to.have.property('rating');",
+                  "});",
+                  "",
+                  "pm.test('Price is a positive number', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.price).to.be.a('number');",
+                  "  pm.expect(json.price).to.be.above(0);",
+                  "});",
+                  "",
+                  "pm.test('Rating is between 0 and 5', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.rating).to.be.at.least(0);",
+                  "  pm.expect(json.rating).to.be.at.most(5);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST Add Product",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/products/add", "host": ["{{baseUrl}}"], "path": ["products", "add"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test Product by Bhanu\",\n  \"description\": \"A test product created for API testing\",\n  \"price\": 49.99,\n  \"category\": \"testing\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201 for product creation', () => {",
+                  "  pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Response contains product id', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('id');",
+                  "});",
+                  "",
+                  "pm.test('Response reflects submitted data', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.title).to.eql('Test Product by Bhanu');",
+                  "  pm.expect(json.price).to.eql(49.99);",
+                  "  pm.expect(json.category).to.eql('testing');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "PUT Update Product",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/products/1", "host": ["{{baseUrl}}"], "path": ["products", "1"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Product Title\",\n  \"price\": 99.99\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 for product update', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Updated fields are reflected', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.title).to.eql('Updated Product Title');",
+                  "  pm.expect(json.price).to.eql(99.99);",
+                  "});",
+                  "",
+                  "pm.test('Product id is preserved after update', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.id).to.eql(1);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "DELETE Product",
+          "request": {
+            "method": "DELETE",
+            "url": { "raw": "{{baseUrl}}/products/1", "host": ["{{baseUrl}}"], "path": ["products", "1"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200 for product deletion', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains deleted product data', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('id');",
+                  "  pm.expect(json).to.have.property('title');",
+                  "});",
+                  "",
+                  "pm.test('Deleted flag is present', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('isDeleted');",
+                  "  pm.expect(json.isDeleted).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Search Products",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/products/search?q=phone", "host": ["{{baseUrl}}"], "path": ["products", "search"], "query": [{ "key": "q", "value": "phone" }] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Search returns products array', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('products');",
+                  "  pm.expect(json.products).to.be.an('array');",
+                  "});",
+                  "",
+                  "pm.test('Search results are not empty', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.products.length).to.be.above(0);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Products Sorted by Price",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/products?sortBy=price&order=asc&limit=5", "host": ["{{baseUrl}}"], "path": ["products"], "query": [{ "key": "sortBy", "value": "price" }, { "key": "order", "value": "asc" }, { "key": "limit", "value": "5" }] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Products are sorted by price ascending', () => {",
+                  "  const json = pm.response.json();",
+                  "  const prices = json.products.map(p => p.price);",
+                  "  for (let i = 1; i < prices.length; i++) {",
+                  "    pm.expect(prices[i]).to.be.at.least(prices[i - 1]);",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Product (Invalid ID - 404)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/products/99999", "host": ["{{baseUrl}}"], "path": ["products", "99999"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 404 for non-existent product', () => {",
+                  "  pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
       ]
     },
     {
-      "name": "D - Protected Endpoint",
+      "name": "D - Protected Endpoint (Chained Auth)",
       "item": [
         {
-          "name": "GET Authenticated User (No Token)",
+          "name": "GET Auth Me (No Token - 401)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 401 without token', () => {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "pm.test('Error message exists', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('message');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Auth Me (With Token - 200)",
           "request": {
             "method": "GET",
             "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] },
@@ -174,7 +518,39 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Status 401 without valid token', () => {",
+                  "pm.test('Status 200 with valid token', () => {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains authenticated user data', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('id');",
+                  "  pm.expect(json).to.have.property('username');",
+                  "  pm.expect(json).to.have.property('email');",
+                  "});",
+                  "",
+                  "pm.test('Username matches logged in user', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.username).to.eql('emilys');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Auth Me (Invalid Token - 401)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] },
+            "header": [{ "key": "Authorization", "value": "Bearer fake_expired_token_12345" }]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 401 for invalid token', () => {",
                   "  pm.response.to.have.status(401);",
                   "});",
                   "",
