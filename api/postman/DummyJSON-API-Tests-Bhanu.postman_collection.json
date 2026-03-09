@@ -6,7 +6,61 @@
   },
   "item": [
     {
-      "name": "A - Auth",
+      "name": "A - Pre-Auth Checks",
+      "item": [
+        {
+          "name": "GET Auth Me (No Token - 401)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 401 without token', () => {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "pm.test('Error message exists', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('message');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET Auth Me (Invalid Token - 401)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] },
+            "header": [{ "key": "Authorization", "value": "Bearer fake_expired_token_12345" }]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 401 for invalid token', () => {",
+                  "  pm.response.to.have.status(401);",
+                  "});",
+                  "",
+                  "pm.test('Error message exists', () => {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('message');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "B - Auth",
       "item": [
         {
           "name": "POST Login (Valid) - Store Token",
@@ -111,7 +165,7 @@
       ]
     },
     {
-      "name": "B - Users",
+      "name": "C - Users",
       "item": [
         {
           "name": "GET All Users",
@@ -223,7 +277,7 @@
       ]
     },
     {
-      "name": "C - Products (CRUD)",
+      "name": "D - Products (CRUD)",
       "item": [
         {
           "name": "GET Products",
@@ -480,32 +534,8 @@
       ]
     },
     {
-      "name": "D - Protected Endpoint (Chained Auth)",
+      "name": "E - Authenticated Access (Chained Auth)",
       "item": [
-        {
-          "name": "GET Auth Me (No Token - 401)",
-          "request": {
-            "method": "GET",
-            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('Status 401 without token', () => {",
-                  "  pm.response.to.have.status(401);",
-                  "});",
-                  "",
-                  "pm.test('Error message exists', () => {",
-                  "  const json = pm.response.json();",
-                  "  pm.expect(json).to.have.property('message');",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
         {
           "name": "GET Auth Me (With Token - 200)",
           "request": {
@@ -532,31 +562,6 @@
                   "pm.test('Username matches logged in user', () => {",
                   "  const json = pm.response.json();",
                   "  pm.expect(json.username).to.eql('emilys');",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "GET Auth Me (Invalid Token - 401)",
-          "request": {
-            "method": "GET",
-            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] },
-            "header": [{ "key": "Authorization", "value": "Bearer fake_expired_token_12345" }]
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test('Status 401 for invalid token', () => {",
-                  "  pm.response.to.have.status(401);",
-                  "});",
-                  "",
-                  "pm.test('Error message exists', () => {",
-                  "  const json = pm.response.json();",
-                  "  pm.expect(json).to.have.property('message');",
                   "});"
                 ]
               }

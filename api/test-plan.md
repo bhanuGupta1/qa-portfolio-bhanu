@@ -28,10 +28,11 @@ Validate the DummyJSON REST API across authentication, user management, product 
 
 | Category | Requests | Focus |
 |----------|----------|-------|
-| A - Auth | 3 | Login flows: valid, invalid creds, empty body |
-| B - Users | 4 | List, single user, invalid user, pagination |
-| C - Products (CRUD) | 8 | Full CRUD, search, sort, schema validation, invalid ID |
-| D - Protected (Chained Auth) | 3 | Token-based access: no token, valid token, fake token |
+| A - Pre-Auth Checks | 2 | Unauthenticated access: no token (401), fake token (401) |
+| B - Auth | 3 | Login flows: valid, invalid creds, empty body |
+| C - Users | 4 | List, single user, invalid user, pagination |
+| D - Products (CRUD) | 8 | Full CRUD, search, sort, schema validation, invalid ID |
+| E - Authenticated Access | 1 | Chained auth: login token reused on /auth/me |
 | **Total** | **18** | **47 assertions** |
 
 ## Environment

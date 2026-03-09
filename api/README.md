@@ -7,10 +7,11 @@ Automated API test suite covering authentication, user management, product CRUD,
 
 | Category | Requests | What's Tested |
 |----------|----------|---------------|
+| Pre-Auth Checks | 2 | Unauthenticated access: no token (401), fake token (401) |
 | Auth | 3 | Valid login (token stored), invalid creds, empty body |
 | Users | 4 | List all, get by ID, invalid ID (404), pagination |
 | Products (CRUD) | 8 | GET, POST, PUT, DELETE, search, sort, schema validation, invalid ID |
-| Protected (Chained Auth) | 3 | No token (401), valid token (200), fake token (401) |
+| Authenticated Access | 1 | Chained auth: login token reused on /auth/me |
 | **Total** | **18 requests** | **47 assertions** |
 
 ## Key Testing Patterns
@@ -53,7 +54,9 @@ api/
 ├── newman/
 │   └── newman-report.html
 ├── evidence/
-│   └── (screenshots from test execution)
+│   ├── SS-01-postman-47-pass-collection.png
+│   ├── SS-02-api-47-tests-pass.mp4
+│   └── old-basic-suite/          ← evidence from initial 6-request version
 ├── test-plan.md
 ├── test-cases.md
 ├── test-summary.md

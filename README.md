@@ -18,14 +18,15 @@ Exploratory and structured testing of [SEEK New Zealand](https://www.seek.co.nz)
 ### 2. API Testing — DummyJSON (Postman + Newman)
 Automated API test suite covering authentication, user management, full product CRUD, and chained auth flows against the DummyJSON REST API.
 
-**18 requests, 47 assertions** across 4 categories:
+**18 requests, 47 assertions** across 5 categories:
 
 | Category | Requests | What's Tested |
 |----------|----------|---------------|
+| Pre-Auth Checks | 2 | Unauthenticated access: no token (401), fake token (401) |
 | Auth | 3 | Valid login (token stored), invalid creds, empty body |
 | Users | 4 | List, get by ID, invalid ID (404), pagination |
 | Products (CRUD) | 8 | GET, POST, PUT, DELETE, search, sort, schema validation |
-| Protected (Chained Auth) | 3 | No token (401), valid token (200), fake token (401) |
+| Authenticated Access | 1 | Chained auth: login token reused on /auth/me |
 
 **Key patterns:** Chained auth (login stores JWT, reused on protected routes), full CRUD coverage, schema validation (field types, value ranges), negative testing, pagination, sort verification
 
