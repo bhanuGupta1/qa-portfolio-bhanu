@@ -68,21 +68,51 @@ Complete E2E automation framework built against [Sauce Demo](https://www.saucede
 
 ---
 
-## How to Run the Cypress Tests
+### 4. Automation — Playwright E2E Framework (TypeScript)
 
+Same app (Sauce Demo), different framework. Built with Playwright + TypeScript to demonstrate tool flexibility and compare approaches. Multi-browser testing (Chromium, Firefox, WebKit), auto-wait, trace viewer.
+
+**29 test cases** across 5 spec files:
+
+| Spec | Tests | Coverage |
+|------|-------|----------|
+| `login.spec.ts` | 7 | Valid login, locked user, invalid creds, empty fields, error dismissal |
+| `inventory.spec.ts` | 4 | Product count, names/prices, logout, direct access protection |
+| `cart.spec.ts` | 7 | Add/remove items, cart verification, continue shopping |
+| `checkout.spec.ts` | 7 | Happy path, missing fields, cancel, total verification, post-purchase |
+| `sorting.spec.ts` | 4 | Name A-Z/Z-A, price low-high/high-low |
+
+**Framework features:**
+
+- Page Object Model — `LoginPage`, `InventoryPage`, `CartPage`, `CheckoutPage` (TypeScript)
+- Data-driven fixtures — 7 user types, full product data, checkout data
+- Multi-browser — Chromium, Firefox, WebKit
+- Screenshot on failure, trace on retry
+- GitHub Actions CI/CD pipeline
+
+**Folder:** [`automation/playwright-framework/`](./automation/playwright-framework)
+
+---
+
+## How to Run Tests
+
+### Cypress
 ```bash
-# Clone the repo
-git clone https://github.com/bhanuGupta1/qa-portfolio-bhanu.git
-cd qa-portfolio-bhanu/automation/cypress-framework
-
-# Install dependencies
+cd automation/cypress-framework
 npm install
+npm test                    # headless
+npm run cy:open             # interactive UI
+```
 
-# Run all tests headless
-npm test
-
-# Open Cypress UI (interactive)
-npm run cy:open
+### Playwright
+```bash
+cd automation/playwright-framework
+npm install
+npx playwright install      # download browsers
+npm test                    # all browsers
+npm run test:chromium       # chromium only
+npm run test:headed         # see the browser
+npm run report              # view HTML report
 ```
 
 ---
