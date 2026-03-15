@@ -1,0 +1,21 @@
+{
+  "name": "playwright-framework",
+  "version": "1.0.0",
+  "description": "Playwright E2E testing framework for Sauce Demo - QA Portfolio",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:chromium": "npx playwright test --project=chromium",
+    "test:firefox": "npx playwright test --project=firefox",
+    "test:webkit": "npx playwright test --project=webkit",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "npx playwright test --debug",
+    "report": "npx playwright show-report"
+  },
+  "keywords": ["playwright", "testing", "e2e", "automation", "qa"],
+  "author": "Bhanu Gupta",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "typescript": "^5.9.3"
+  }
+}
